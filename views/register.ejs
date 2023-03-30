@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="shortcut icon" type="image/png" href="images/heckar.png" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="stylesheets/index.css" />
+    <style>
+      body {
+        background-image: -webkit-linear-gradient(top right, #307ab7, #824aad);
+        background-image: -moz-linear-gradient(top right, #307ab7, #824aad);
+        background-image: -o-linear-gradient(top right, #307ab7, #824aad);
+        background-image: linear-gradient(to bottom right, #307ab7, #824aad);
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <form class="login-form" method="post">
+        <% if(email !== '') { %>
+        <div class="mb-5 mt-3">
+          <h1>Email : <%= email %></h1>
+          <h1>Name : <%= name %></h1>
+          <h1>Password : <%= password %></h1>
+        </div>
+        <hr />
+        <% } %>
+        <div class="mb-5 mt-3">
+          <h1>Register</h1>
+        </div>
+        <div class="mb-3">
+          <label for="emailRegisterInput" class="form-label">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            id="emailRegisterInput"
+            name="email"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="nameRegisterInput" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nameRegisterInput"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="passwordRegisterInput" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="passwordRegisterInput"
+            name="password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn-login">Register</button>
+      </form>
+    </div>
+
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="javascripts/app.js"></script>
+  </body>
+</html>
