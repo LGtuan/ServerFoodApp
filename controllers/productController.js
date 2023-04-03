@@ -1,5 +1,7 @@
 var productModel = require('../models/product.model')
 var categoryModel = require('../models/category.model')
+var fs = require('fs')
+var path = require('path')
 
 exports.products = async (req, res, next) => {
 
@@ -56,24 +58,48 @@ exports.addProduct = async (req, res, next) => {
     let categories = await categoryModel.find()
 
     if (req.method == 'POST') {
-        let productObj = new productModel()
-        productObj.name = req.body.name
-        productObj.price = req.body.price
-        productObj.content = req.body.content
-        productObj.image = req.body.image
-        productObj.cartId = req.body.cartId
-        productObj.quantity = req.body.quantity
+        let tmpPath = req.file.path
+        let date = new Date()
+        let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
+        let targetDir = path.join(__dirname, '..', 'public', imgDir)
+        fs.mkdir(targetDir, { recursive: true }, (err) => {
+            let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
+            let targetPath = path.join(targetDir, imgFileName)
 
-        try {
-            await productObj.save()
-            msg = 'Thêm thành công'
-        } catch (err) {
-            console.log(err)
-            msg = "Lỗi"
-        }
+            fs.readFile(tmpPath, function (err, data) {
+                if (err) throw err;
+
+                // Lưu nội dung tệp vào tệp mới
+                fs.writeFile(targetPath, data, function (err) {
+                    if (err) throw err;
+
+                    // Xóa tệp tạm thời
+                    fs.unlink(tmpPath, function (err) {
+                        if (err) throw err;
+
+                        let productObj = new productModel()
+                        productObj.name = req.body.name
+                        productObj.price = req.body.price
+                        productObj.content = req.body.content
+                        productObj.image = path.join(imgDir, imgFileName)
+                        productObj.cartId = req.body.cartId
+                        productObj.quantity = req.body.quantity
+
+                        productObj.save().then(() => {
+                            msg = 'Thêm thành công'
+                            res.render('product/addProduct', { title: 'Thêm sản phẩm', msg, categories })
+                        }).catch(err => {
+                            console.log(err)
+                            msg = "Lỗi"
+                            res.render('product/addProduct', { title: 'Thêm sản phẩm', msg, categories })
+                        })
+                    });
+                });
+            });
+        })
+    } else {
+        res.render('product/addProduct', { title: 'Thêm sản phẩm', msg, categories })
     }
-
-    res.render('product/addProduct', { title: 'Thêm sản phẩm', msg, categories })
 }
 
 exports.editProduct = async (req, res, next) => {
@@ -84,28 +110,52 @@ exports.editProduct = async (req, res, next) => {
     let categories = await categoryModel.find()
 
     if (req.method == 'POST') {
-        product = new productModel()
-        product.name = req.body.name
-        product.price = req.body.price
-        product.content = req.body.content
-        product.image = req.body.image
-        product.cartId = req.body.cartId
-        product.quantity = req.body.quantity
+        let tmpPath = req.file.path
+        let date = new Date()
+        let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
+        let targetDir = path.join(__dirname, '..', 'public', imgDir)
+        fs.mkdir(targetDir, { recursive: true }, (err) => {
+            let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
+            let targetPath = path.join(targetDir, imgFileName)
 
-        product._id = productId
+            fs.readFile(tmpPath, function (err, data) {
+                if (err) throw err;
 
-        try {
-            await productModel.findByIdAndUpdate(productId, product)
-            msg = 'Cập nhật thành công'
-        } catch (err) {
-            console.log(err)
-            msg = "Lỗi"
-        }
+                // Lưu nội dung tệp vào tệp mới
+                fs.writeFile(targetPath, data, function (err) {
+                    if (err) throw err;
+
+                    // Xóa tệp tạm thời
+                    fs.unlink(tmpPath, function (err) {
+                        if (err) throw err;
+
+                        product = new productModel()
+                        product.name = req.body.name
+                        product.price = req.body.price
+                        product.content = req.body.content
+                        product.image = path.join(imgDir, imgFileName).replaceAll('\\', '/')
+                        product.cartId = req.body.cartId
+                        product.quantity = req.body.quantity
+                        product._id = productId
+
+                        productModel.findByIdAndUpdate(productId, product)
+                            .then(() => {
+                                msg = 'Cập nhật thành công'
+                                res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
+                            }).catch((err) => {
+                                console.log(err)
+                                msg = "Lỗi"
+                                res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
+                            })
+                    });
+                });
+            });
+        })
     } else {
         product = await productModel.findById(productId)
+        res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
     }
 
-    res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
 }
 
 exports.detailProduct = async (req, res, next) => {

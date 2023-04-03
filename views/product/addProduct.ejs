@@ -45,7 +45,7 @@
                                 <%= msg %>
                         </h1>
 
-                        <form class="row" action="/products/add" method="post">
+                        <form class="row" action="/products/add" method="post" enctype="multipart/form-data">
                                 <div class="col-8">
                                         <div class="mb-3">
                                                 <label class="form-label fw-bold">Tên sản phẩm</label>
@@ -78,7 +78,10 @@
                                 <div class="col-4">
                                         <div class="mb-3">
                                                 <label class="form-label fw-bold">Hình ảnh</label>
-                                                <input type="text" class="form-control" name="image">
+                                                <input id="img-input" type="file" class="form-control" name="image">
+                                                <img id="img-display" class="pt-2"
+                                                        style="max-height: 400px;max-width: 300px"
+                                                        src="https://www.selikoff.net/blog-files/null-value.gif" />
                                         </div>
                                 </div>
                                 <div class="d-flex col-12" style="justify-content: flex-end;">
@@ -93,3 +96,21 @@
 
         </div>
 </div>
+
+<script>
+        var imgInput = document.getElementById('img-input')
+        var previewImg = document.getElementById('img-display')
+
+        imgInput.addEventListener('change', function () {
+                const file = this.files[0];
+                const reader = new FileReader();
+
+                reader.addEventListener('load', function () {
+                        previewImg.src = reader.result;
+                });
+
+                if (file) {
+                        reader.readAsDataURL(file);
+                }
+        })
+</script>
