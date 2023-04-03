@@ -1,126 +1,147 @@
-exports.products = (req, res, next) => {
+var productModel = require('../models/product.model')
+var categoryModel = require('../models/category.model')
 
-    const productData = [
-        {
-            id: 1,
-            name: 'Play soccer',
-            category: 'Truyện tranh',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 300,
-            price: '132,000',
-            content: 'this is conten'
-        },
+exports.products = async (req, res, next) => {
 
-        {
-            id: 2,
-            name: 'This is a girl',
-            category: 'Manga',
-            img: 'https://i.ex-cdn.com/mgn.vn/files/content/2022/06/20/top-5-rom-com-manga-hap-nhat-ma-ban-khong-the-bo-lo_1-1124.jpg',
-            quantity: 158,
-            price: '135,000',
-            content: 'this is conten'
-        },
-        {
-            id: 3,
-            name: 'Onepiece',
-            category: 'Manhua',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 300,
-            price: '132,000',
-            content: 'this is conten'
-        },
+    let filterCondition = {}
+    let quantityOperator = ''
+    let priceOperator = ''
+    let quantity = ''
+    let price = ''
+    if (typeof (req.query.quantityOperator) != 'undefined') {
+        quantityOperator = req.query.quantityOperator
+        priceOperator = req.query.priceOperator
+        quantity = parseInt(req.query.quantity)
+        price = parseInt(req.query.price)
 
-        {
-            id: 4,
-            name: 'Ta là đại thần tiên',
-            category: 'Comic',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 123,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 5,
-            name: 'Võ luyện đỉnh phong',
-            category: 'Comic',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 323,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 6,
-            name: 'Ta là superman',
-            category: 'Truyện tranh',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 12,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 7,
-            name: 'Batman is the best',
-            category: 'Manga',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 234,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 8,
-            name: 'Play soccer',
-            category: 'Truyện tranh',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 324,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 9,
-            name: 'Võ đạo độc tôn',
-            category: 'Manhua',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 153,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 10,
-            name: 'Chuyển sinh đến một thế giới khác',
-            category: 'Comic',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 213,
-            price: '132,000',
-            content: 'this is conten'
-        },
-
-        {
-            id: 11,
-            name: 'Sau khi chuyển sinh ta liền vô địch',
-            category: 'Truyện tranh',
-            img: 'https://cdnimgen.vietnamplus.vn/uploaded/wbxx/2022_07_28/son_goal.jpg',
-            quantity: 112,
-            price: '132,000',
-            content: 'this is conten'
+        // get quantity condition
+        if (!isNaN(quantity)) {
+            if (quantityOperator == 'gt') {
+                filterCondition = { quantity: { $gte: quantity } }
+            } else if (quantityOperator == 'lt') {
+                filterCondition = { quantity: { $lte: quantity } }
+            }
         }
-    ]
 
-    res.render('product/products', { title: 'Products', productData })
-}
-
-exports.addProduct = (req, res, next) => {
-
-    let ten_sp = ''
-
-    if (req.method == 'POST') {
-        ten_sp = req.body.ten_sp
+        // get price condition
+        if (!isNaN(price)) {
+            if (priceOperator == 'gt') {
+                filterCondition = { ...filterCondition, price: { $gte: price } }
+            } else if (priceOperator == 'lt') {
+                filterCondition = { ...filterCondition, price: { $lte: price } }
+            }
+        }
     }
 
-    res.render('product/add', { title: ten_sp, ten_sp: ten_sp })
+    // let list = await myModel.productModel.find(filterCondition).sort({ name: 1 });
+
+    let categories = await categoryModel.find()
+    let list = await productModel.find(filterCondition).populate('cartId');
+
+    res.render('product/products', {
+        title: 'Products',
+        productData: list,
+        categories,
+        quantityOperator,
+        priceOperator,
+        quantity,
+        price
+    })
+}
+
+exports.addProduct = async (req, res, next) => {
+
+    let msg = ''
+
+    let categories = await categoryModel.find()
+
+    if (req.method == 'POST') {
+        let productObj = new productModel()
+        productObj.name = req.body.name
+        productObj.price = req.body.price
+        productObj.content = req.body.content
+        productObj.image = req.body.image
+        productObj.cartId = req.body.cartId
+        productObj.quantity = req.body.quantity
+
+        try {
+            await productObj.save()
+            msg = 'Thêm thành công'
+        } catch (err) {
+            console.log(err)
+            msg = "Lỗi"
+        }
+    }
+
+    res.render('product/addProduct', { title: 'Thêm sản phẩm', msg, categories })
+}
+
+exports.editProduct = async (req, res, next) => {
+    let msg = ''
+
+    let productId = req.params.productId
+    let product;
+    let categories = await categoryModel.find()
+
+    if (req.method == 'POST') {
+        product = new productModel()
+        product.name = req.body.name
+        product.price = req.body.price
+        product.content = req.body.content
+        product.image = req.body.image
+        product.cartId = req.body.cartId
+        product.quantity = req.body.quantity
+
+        product._id = productId
+
+        try {
+            await productModel.findByIdAndUpdate(productId, product)
+            msg = 'Cập nhật thành công'
+        } catch (err) {
+            console.log(err)
+            msg = "Lỗi"
+        }
+    } else {
+        product = await productModel.findById(productId)
+    }
+
+    res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
+}
+
+exports.detailProduct = async (req, res, next) => {
+
+    let productId = req.params.productId
+
+    let product
+
+    try {
+        product = await productModel.findById(productId).populate('cartId')
+        res.render('product/detailsProduct', { title: 'Thông tin chi tiết', product })
+
+    } catch (err) {
+        console.log(err)
+        res.send('err')
+    }
+
+}
+
+exports.deleteProduct = async (req, res, next) => {
+
+    let msg = ''
+
+    if (req.method == 'POST') {
+
+        try {
+            let id = req.body.id
+            await productModel.findByIdAndDelete(id)
+
+            msg = 'Xóa thành công sản phẩm có id : ' + id
+        } catch (err) {
+            msg = 'Xóa thất bại'
+            console.log(err)
+        }
+
+    }
+
+    res.render('product/deleteProduct', { title: 'Xóa sản phẩm', msg })
 }

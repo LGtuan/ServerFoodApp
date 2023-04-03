@@ -4,6 +4,8 @@ var userController = require('../controllers/userController')
 
 router.get('/', userController.users)
 
-router.post('/', userController.addProduct)
+router.post('/add', userController.addUser)
+router.post('/edit', userController.editUser)
 
+router.post('/delete', userController.deleteUser)
 module.exports = router

@@ -1,10 +1,17 @@
 var express = require('express')
 var router = express.Router()
-var spController = require('../controllers/productController')
+var productController = require('../controllers/productController')
 
-router.get('/', spController.products);
+router.get('/', productController.products);
 
-router.get('/add', spController.addProduct)
-router.post('/add', spController.addProduct)
+router.get('/add', productController.addProduct)
+router.post('/add', productController.addProduct)
+
+router.get('/edit/:productId', productController.editProduct)
+router.post('/edit/:productId', productController.editProduct)
+
+router.get('/:productId', productController.detailProduct)
+
+router.post('/delete', productController.deleteProduct)
 
 module.exports = router

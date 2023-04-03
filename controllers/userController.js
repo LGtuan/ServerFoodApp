@@ -1,146 +1,83 @@
-var userData = [
-    {
-        id: 1,
-        name: 'Lê Gia Tuấn',
-        img: 'https://cdn1.vectorstock.com/i/1000x1000/31/95/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg',
-        email: 'tuan@gmail.com',
-        status: 'Active',
-        password: 'tuan123456',
-        type: 'Admin'
-    },
-    {
-        id: 2,
-        name: 'Dương Quang Mạnh',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png',
-        email: 'manh@gmail.com',
-        status: 'Active',
-        password: 'manh123456',
-        type: 'User'
-    },
-    {
-        id: 3,
-        name: 'Nguyễn Thị Thu',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-man-avatar-with-circle-frame-vector-ilustration-png-image_6110328.png',
-        email: 'thu@gmail.com',
-        status: 'Inactive',
-        password: 'thuFullStack',
-        type: 'User'
-    },
-    {
-        id: 4,
-        name: 'Bùi Công Thành',
-        img: 'https://p.kindpng.com/picc/s/22-223941_transparent-avatar-png-male-avatar-icon-transparent-png.png',
-        email: 'thanh@gmail.com',
-        status: 'Inactive',
-        password: 'thanhdev',
-        type: 'Admin'
-    },
-    {
-        id: 5,
-        name: 'Bùi Văn Lâm',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-with-beard-vector-ilustration-png-image_6110777.png',
-        email: 'lam@gmail.com',
-        status: 'Active',
-        password: 'lamsuper',
-        type: 'User'
-    },
-    {
-        id: 1,
-        name: 'Lê Gia Tuấn',
-        img: 'https://cdn1.vectorstock.com/i/1000x1000/31/95/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg',
-        email: 'tuan@gmail.com',
-        status: 'Active',
-        password: 'tuan123456',
-        type: 'Admin'
-    },
-    {
-        id: 2,
-        name: 'Dương Quang Mạnh',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png',
-        email: 'manh@gmail.com',
-        status: 'Active',
-        password: 'manh123456',
-        type: 'User'
-    },
-    {
-        id: 3,
-        name: 'Nguyễn Thị Thu',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-man-avatar-with-circle-frame-vector-ilustration-png-image_6110328.png',
-        email: 'thu@gmail.com',
-        status: 'Inactive',
-        password: 'thuFullStack',
-        type: 'User'
-    },
-    {
-        id: 4,
-        name: 'Bùi Công Thành',
-        img: 'https://p.kindpng.com/picc/s/22-223941_transparent-avatar-png-male-avatar-icon-transparent-png.png',
-        email: 'thanh@gmail.com',
-        status: 'Inactive',
-        password: 'thanhdev',
-        type: 'Admin'
-    },
-    {
-        id: 5,
-        name: 'Bùi Văn Lâm',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-with-beard-vector-ilustration-png-image_6110777.png',
-        email: 'lam@gmail.com',
-        status: 'Active',
-        password: 'lamsuper',
-        type: 'User'
-    },
-    {
-        id: 1,
-        name: 'Lê Gia Tuấn',
-        img: 'https://cdn1.vectorstock.com/i/1000x1000/31/95/user-sign-icon-person-symbol-human-avatar-vector-12693195.jpg',
-        email: 'tuan@gmail.com',
-        status: 'Active',
-        password: 'tuan123456',
-        type: 'Admin'
-    },
-    {
-        id: 2,
-        name: 'Dương Quang Mạnh',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png',
-        email: 'manh@gmail.com',
-        status: 'Active',
-        password: 'manh123456',
-        type: 'User'
-    },
-    {
-        id: 3,
-        name: 'Nguyễn Thị Thu',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-man-avatar-with-circle-frame-vector-ilustration-png-image_6110328.png',
-        email: 'thu@gmail.com',
-        status: 'Inactive',
-        password: 'thuFullStack',
-        type: 'User'
-    },
-    {
-        id: 4,
-        name: 'Bùi Công Thành',
-        img: 'https://p.kindpng.com/picc/s/22-223941_transparent-avatar-png-male-avatar-icon-transparent-png.png',
-        email: 'thanh@gmail.com',
-        status: 'Inactive',
-        password: 'thanhdev',
-        type: 'Admin'
-    },
-    {
-        id: 5,
-        name: 'Bùi Văn Lâm',
-        img: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-with-beard-vector-ilustration-png-image_6110777.png',
-        email: 'lam@gmail.com',
-        status: 'Active',
-        password: 'lamsuper',
-        type: 'User'
-    },
-]
+const { render } = require('ejs')
+var userModel = require('../models/user.model')
 
-exports.users = (req, res, next) => {
-    res.render('users', { title: 'Người dùng', userData })
+exports.users = async (req, res, next) => {
+
+    let userData = await userModel.find()
+    res.render('user/users', { title: 'Người dùng', userData })
 }
 
-exports.addProduct = (req, res, next) => {
-    userData.add
-    res.render('users', { title: 'Người dùng', userData })
+exports.addUser = async (req, res, next) => {
+
+    let msg = ''
+    if (req.method == 'POST') {
+        let userObj = new userModel()
+        userObj.name = req.body.name
+        userObj.email = req.body.email
+        userObj.password = req.body.password
+        userObj.type = req.body.type
+        userObj.status = req.body.status
+        userObj.image = req.body.image
+
+        try {
+
+            await userObj.save()
+
+            msg = "Thêm người dùng thành công"
+        } catch (err) {
+            msg = "Thêm người dùng thất bại"
+            console.log(err)
+        }
+
+    }
+
+    res.render('user/userNotification', { title: 'Thêm người dùng', msg })
+}
+
+exports.editUser = async (req, res, next) => {
+
+    let msg = ''
+    if (req.method == 'POST') {
+        let userObj = new userModel()
+        userObj.name = req.body.name
+        userObj.email = req.body.email
+        userObj.password = req.body.password
+        userObj.type = req.body.type
+        userObj.status = req.body.status
+        userObj.image = req.body.image
+
+        userObj._id = req.body.id
+
+        try {
+
+            await userModel.findByIdAndUpdate(userObj._id, userObj)
+
+            msg = "Đã cập nhật người dùng có ID : " + userObj._id
+        } catch (err) {
+            msg = "Cập nhật người dùng thất bại"
+            console.log(err)
+        }
+    }
+
+    res.render('user/userNotification', { title: 'Cập nhât người dùng', msg })
+}
+
+exports.deleteUser = async (req, res, next) => {
+    let msg = ''
+    if (req.method == 'POST') {
+
+        let id = req.body.id
+
+        try {
+
+            await userModel.findByIdAndDelete(id)
+
+            msg = "Đã xóa người dùng có ID : " + id
+        } catch (err) {
+            msg = "Cập nhật người dùng thất bại"
+            console.log(err)
+        }
+    }
+
+    res.render('user/userNotification', { title: 'Xóa người dùng', msg })
 }

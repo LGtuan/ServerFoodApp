@@ -1,66 +1,34 @@
 <div class="main-container d-flex">
   <div class="sidebar" id="side-nav">
     <div class="d-flex flex-column pt-3 pb-3 align-items-center">
-      <img
-        class="header-avatar"
-        src="https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg"
-      />
+      <img class="header-avatar"
+        src="https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg" />
       <span class="fs-4 text-white">Lê Gia Tuấn</span>
     </div>
     <hr class="hr-side mx-2" />
     <ul class="list-unstyled px-2">
       <li class="active">
-        <a
-          href="dashBoard"
-          class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"
-          ><i class="fa-solid fa-house px-3"></i>Bảng điều khiển</a
-        >
+        <a href="dashBoard" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"><i
+            class="fa-solid fa-house px-3"></i>Bảng điều khiển</a>
       </li>
       <li class="">
-        <a
-          href="products"
-          class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"
-        >
+        <a href="products" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1">
           <i class="fa-solid fa-book px-3"></i>Sản phẩm
         </a>
       </li>
       <li class="">
-        <a
-          href="category"
-          class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"
-        >
+        <a href="category" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1">
           <i class="fa-solid fa-receipt px-3"></i>Danh mục
         </a>
       </li>
       <li class="">
-        <a
-          href="bills"
-          class="text-decoration-none d-flex justify-content-between pt-3 pb-3 mt-2 px-1"
-          ><span><i class="fa-solid fa-cart-shopping px-3"></i>Hóa đơn</span>
-          <span class="bardge rounded-pill py-0 px-2">02</span></a
-        >
-      </li>
-      <li class="">
-        <a href="users" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"
-          ><i class="fa-solid fa-users px-3"></i>Người dùng</a
-        >
-      </li>
-    </ul>
-    <hr class="hr-side mx-2" />
-    <ul class="list-unstyled px-2">
-      <li class="">
-        <a href="#" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"
-          ><i class="fa-solid fa-gears px-3"></i>Cài đặt</a
-        >
+        <a href="users" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"><i
+            class="fa-solid fa-users px-3"></i>Người dùng</a>
       </li>
     </ul>
   </div>
   <div class="topbar">
-    <a
-      type="button"
-      onclick="logout()"
-      class="item-logout text-decoration-none"
-    >
+    <a type="button" onclick="logout()" class="item-logout text-decoration-none">
       <i class="fa-solid fa-right-from-bracket"></i>
     </a>
   </div>
@@ -72,15 +40,8 @@
   </div>
 </div>
 <!-- Moda -->
-<div
-  class="modal fade"
-  id="ModalUP"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
-  data-backdrop="static"
-  data-keyboard="false"
->
+<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+  data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
@@ -98,21 +59,14 @@
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Tên sản phẩm</label>
-            <input
-              class="form-control"
-              type="text"
-              required
-              value="Bàn ăn gỗ Theresa"
-            />
+            <input class="form-control" type="text" required value="Bàn ăn gỗ Theresa" />
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Số lượng</label>
             <input class="form-control" type="number" required value="20" />
           </div>
           <div class="form-group col-md-6">
-            <label for="exampleSelect1" class="control-label"
-              >Tình trạng sản phẩm</label
-            >
+            <label for="exampleSelect1" class="control-label">Tình trạng sản phẩm</label>
             <select class="form-control" id="exampleSelect1">
               <option>Còn hàng</option>
               <option>Hết hàng</option>
@@ -139,9 +93,7 @@
           </div>
         </div>
         <br />
-        <a href="#" style="float: right; font-weight: 600; color: #ea0000"
-          >Chỉnh sửa sản phẩm nâng cao</a
-        >
+        <a href="#" style="float: right; font-weight: 600; color: #ea0000">Chỉnh sửa sản phẩm nâng cao</a>
         <br />
         <br />
         <button class="btn btn-save" type="button">Lưu lại</button>

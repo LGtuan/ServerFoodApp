@@ -9,15 +9,14 @@
     <ul class="list-unstyled px-2">
       <li class="">
         <a href="/dashBoard" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1"><i
-            class="fa-solid fa-house px-3"></i>Bảng điều khiển
-        </a>
+            class="fa-solid fa-house px-3"></i>Bảng điều khiển</a>
       </li>
-      <li class="active">
+      <li class="">
         <a href="/products" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1">
           <i class="fa-solid fa-book px-3"></i>Sản phẩm
         </a>
       </li>
-      <li class="">
+      <li class="active">
         <a href="/category" class="text-decoration-none d-block pt-3 pb-3 mt-2 px-1">
           <i class="fa-solid fa-receipt px-3"></i>Danh mục
         </a>
@@ -40,11 +39,11 @@
     </div>
     <div class="table-container">
       <div class="tool-container">
-        <a href="/products/add" class="tool-button text-decoration-none"
-          style="color: #006a4a; background-color: #91ffae">
+        <button class="tool-button" style="color: #006a4a; background-color: #91ffae" data-bs-target="#addModal"
+          data-bs-toggle="modal">
           <i class="fa-solid fa-plus"></i>
-          <span>Thêm sản phẩm</span>
-        </a>
+          <span>Thêm danh mục</span>
+        </button>
         <button class="tool-button" style="color: #006a6a; background-color: #8fffda">
           <i class="fa-solid fa-file-excel"></i>
           <span>Xuất excel</span>
@@ -55,91 +54,97 @@
         </button>
       </div>
       <hr />
-      <div class="row d-flex align-items-center" style="justify-content: space-between;">
-        <div class="row d-flex align-items-center pb-3" style="width: auto;">
-          <label style="width: auto;" class="fw-bold">Thể loại :</label>
-          <select id="category-filter" class="form-select" style="width: 200px;">
-            <option value="">Tất cả thể loại</option>
-            <% categories.forEach(item=> { %>
-
-              <option value="<%= item.name %>">
-                <%= item.name %>
-              </option>
-              <%}) %>
-          </select>
-        </div>
-        <form class="row d-flex align-items-center pb-3" style="width: auto;">
-          <label style="width: auto;" class="fw-bold">Số lượng :</label>
-          <select name="quantityOperator" class="form-select" style="width:90px;">
-            <option value="">Chọn</option>
-            <option <%=(quantityOperator=='gt' ) ? 'selected' : '' %> value="gt">&gt=</option>
-            <option <%=(quantityOperator=='lt' ) ? 'selected' : '' %> value="lt">&lt=</option>
-          </select>
-          <input type="number" class="form-control ms-3" style="width: 120px;" name="quantity" value="<%= quantity %>">
-          <label style="width: auto;" class="fw-bold">Giá tiền :</label>
-          <select name="priceOperator" class="form-select" style="width:90px;">
-            <option value="">Chọn</option>
-            <option <%=(priceOperator=='gt' ) ? 'selected' : '' %> value="gt">&gt=</option>
-            <option <%=(priceOperator=='lt' ) ? 'selected' : '' %> value="lt">&lt=</option>
-          </select>
-          <input type="number" class="form-control ms-3" style="width: 120px;" name="price" value="<%= price %>">
-          <button type="submit" style="width: 80px;" class="btn btn btn-outline-dark ms-1">Lọc</button>
-        </form>
-      </div>
-      <table id="productTable" class="table table-bordered table-hover" style="width: 100%">
+      <table id="categoryTable" class="table table-bordered table-hover" style="width: 100%">
         <thead class="table-light">
           <tr>
             <th>ID</th>
             <th>Tên</th>
-            <th>Danh mục</th>
-            <th>Hình ảnh</th>
-            <th>Số lượng</th>
-            <th>Giá tiền</th>
-            <th>Chức năng</th>
+            <th>SL sản phẩm</th>
+            <th>Tính năng</th>
           </tr>
         </thead>
         <tbody>
-          <% productData.map((product)=>{ %>
+          <% categoryData.map( (item)=> { %>
             <tr>
-              <td style="width: 200px;">
-                <a href="/products/<%= product._id %>" class="text-black">
-                  <%= product._id %>
-                </a>
-              </td>
-              <td style="max-width: 150px;">
-                <%= product.name %>
+              <td style="max-width: 100px;">
+                <%= item._id %>
               </td>
               <td>
-                <%= product.cartId.name %>
+                <%= item.name %>
+              </td>
+              <td>
+                <%= item.count %>
               </td>
               <td class="text-center">
-                <img class="product-img" src="<%= product.image %>" />
-              </td>
-              <td>
-                <%= product.quantity %>
-              </td>
-              <td>
-                <%= product.price %>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-primary btn-sm trash" data-bs-toggle="modal" data-bs-target="#comfirmDeleteModal"
-                  onclick="onDelete('<%= product._id %>')">
+                <button class="btn btn-primary btn-sm trash" type="button" data-bs-target="#comfirmDeleteModal"
+                  data-bs-toggle="modal" onclick="onDelete('<%= item._id %>')">
                   <i class="fas fa-trash-alt"></i>
                 </button>
-                <a class="btn btn-primary btn-sm edit" href="/products/edit/<%= product._id %>">
+                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
+                  data-bs-toggle="modal" data-bs-target="#editModal"
+                  onclick="onEditClick('<%= item._id %>','<%= item.name %>')">
                   <i class="fas fa-edit"></i>
-                </a>
+                </button>
               </td>
             </tr>
-            <%})%>
+            <% }) %>
         </tbody>
       </table>
     </div>
   </div>
 </div>
+<!-- Moda -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+  data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form class="modal-content" action="/category/edit" method="post">
+      <div class="modal-header">
+        <h5>Chỉnh sửa danh mục</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group col-md-6 mb-3">
+          <label name class="control-label">ID</label>
+          <input id="inputIdEdit" name="inputId" class="form-control" type="text" required readonly />
+        </div>
+        <div class="form-group col-md-6 mb-3 mt-3">
+          <label name class="control-label">Tên danh mục</label>
+          <input id="inputNameEdit" name="name" class="form-control" type="text" required value="" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-save" type="submit">Lưu lại</button>
+        <button class="btn btn-cancel" data-bs-dismiss="modal" type="button">
+          Hủy bỏ
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form class="modal-content" action="/category/add" method="post">
+      <div class="modal-header">
+        <h5>Thêm danh mục</h5>
+      </div>
+      <div class="modal-body" method="post">
+        <div class="form-group col-md-6 mb-3">
+          <label class="control-label">Tên danh mục</label>
+          <input name="name" class="form-control" type="text" required value="" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-save" type="submit">Lưu lại</button>
+        <button class="btn btn-cancel" data-bs-dismiss="modal" type="button">
+          Hủy bỏ
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <div class="modal fade" id="comfirmDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <form class="modal-dialog" action="/products/delete" method="post">
+  <form class="modal-dialog" action="/category/delete" method="post">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
@@ -148,7 +153,7 @@
         </button>
       </div>
       <div class="modal-body row">
-        <a class="fw-bold text-decoration-none text-danger">Xóa sản phẩm có id : </a>
+        <a class="fw-bold text-decoration-none text-danger">Xóa danh mục có id : </a>
         <input id="deleteIdtxt" class="form-control" name="id" readonly>
       </div>
       <div class="modal-footer">
@@ -160,9 +165,10 @@
 
 <script src="/jquery/jquery.js"></script>
 <script src="/jquery/jquery.table.js"></script>
+
 <script>
   $(document).ready(function () {
-    var table = $("#productTable").DataTable({
+    $("#categoryTable").DataTable({
       language: {
         paginate: {
           previous: "Trước",
@@ -178,18 +184,19 @@
       },
       sDom: '<"top"lBf><"clear">rt<"bottom"ip><"clear">',
       sPaginationType: "full_numbers",
-      columnDefs: [{ orderable: false, targets: [2, 3, 6] }],
-    });
-
-    $('#category-filter').on('change', function () {
-      var category = $(this).val();
-      table.column(2).search(category).draw();
+      columnDefs: [{ orderable: false, targets: [3] }],
     });
   });
-
+  function onEditClick(id, text) {
+    var input = document.getElementById("inputNameEdit")
+    var inputId = document.getElementById("inputIdEdit")
+    inputId.value = id
+    input.value = text
+  }
 
   function onDelete(id) {
     var txt = document.getElementById('deleteIdtxt')
     txt.value = id
   }
+
 </script>

@@ -4,4 +4,9 @@ var categoryController = require('../controllers/categoryController')
 
 router.get('/', categoryController.category)
 
+router.post('/edit', categoryController.edit)
+router.post('/add', categoryController.add)
+
+router.post('/delete', categoryController.delete)
+
 module.exports = router

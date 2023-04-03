@@ -1,45 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="images/heckar.png" />
-    <title><%= title %></title>
 
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="fontawesome/css/all.css" />
-    <link rel="stylesheet" href="stylesheets/table.css" />
-    <link rel="stylesheet" href="stylesheets/index.css" />
-  </head>
-  <body onload="time()">
-    <%- body %>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" href="/images/heckar.png" />
+  <title>
+    <%= title %>
+  </title>
 
-    <script src="jquery/jquery.js"></script>
-    <script src="jquery/jquery.table.js"></script>
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="javascripts/app.js"></script>
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="/stylesheets/table.css" />
+  <link rel="stylesheet" href="/stylesheets/index.css" />
+</head>
+
+<body onload="time()">
+  <%- body %>
+
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/javascripts/app.js"></script>
     <script>
-      $(document).ready(function () {
-        $("#tableData").DataTable({
-          language: {
-            paginate: {
-              previous: "Trước",
-              next: "Sau",
-            },
-            search: "Tìm kiếm:",
-            lengthMenu: "Hiển thị _MENU_ mục",
-            info: "Đang hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
-            infoEmpty: "Không có mục nào để hiển thị",
-            infoFiltered: "(được lọc từ tổng số _MAX_ mục)",
-            emptyTable: "Không có mục nào để hiển thị",
-            zeroRecords: "Không có mục nào khớp",
-          },
-          sDom: '<"top"lBf><"clear">rt<"bottom"ip><"clear">',
-          sPaginationType: "full_numbers",
-          columnDefs: [{ orderable: false, targets: [2, 3, 6] }],
-        });
-      });
 
       function time() {
         var today = new Date();
@@ -80,5 +62,6 @@
         }
       }
     </script>
-  </body>
+</body>
+
 </html>

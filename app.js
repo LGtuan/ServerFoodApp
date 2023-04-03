@@ -8,7 +8,6 @@ var expressLayout = require('express-ejs-layouts')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products')
-var billsRouter = require('./routes/bills')
 var dashboardRouter = require('./routes/dashboard')
 var categoryRouter = require('./routes/category')
 
@@ -29,7 +28,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter)
 app.use('/dashboard', dashboardRouter)
-app.use('/bills', billsRouter)
 app.use('/category', categoryRouter)
 
 // catch 404 and forward to error handler
