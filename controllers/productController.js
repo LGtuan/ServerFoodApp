@@ -60,7 +60,7 @@ exports.addProduct = async (req, res, next) => {
     if (req.method == 'POST') {
         let tmpPath = req.file.path
         let date = new Date()
-        let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
+        let imgDir = path.join('/uploads', 'products', (date.getMonth() + 1).toString(date.getFullYear().toString(),))
         let targetDir = path.join(__dirname, '..', 'public', imgDir)
         fs.mkdir(targetDir, { recursive: true }, (err) => {
             let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
@@ -110,52 +110,61 @@ exports.editProduct = async (req, res, next) => {
     let categories = await categoryModel.find()
 
     if (req.method == 'POST') {
-        let tmpPath = req.file.path
-        let date = new Date()
-        let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
-        let targetDir = path.join(__dirname, '..', 'public', imgDir)
-        fs.mkdir(targetDir, { recursive: true }, (err) => {
-            let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
-            let targetPath = path.join(targetDir, imgFileName)
+        product = new productModel()
+        product.name = req.body.name
+        product.price = req.body.price
+        product.content = req.body.content
+        product.cartId = req.body.cartId
+        product.quantity = req.body.quantity
+        product._id = productId
 
-            fs.readFile(tmpPath, function (err, data) {
-                if (err) throw err;
+        if (req.file) {
+            let tmpPath = req.file.path
+            let date = new Date()
+            let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
+            let targetDir = path.join(__dirname, '..', 'public', imgDir)
+            fs.mkdir(targetDir, { recursive: true }, (err) => {
+                let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
+                let targetPath = path.join(targetDir, imgFileName)
 
-                // Lưu nội dung tệp vào tệp mới
-                fs.writeFile(targetPath, data, function (err) {
+                fs.readFile(tmpPath, function (err, data) {
                     if (err) throw err;
-
-                    // Xóa tệp tạm thời
-                    fs.unlink(tmpPath, function (err) {
+                    fs.writeFile(targetPath, data, function (err) {
                         if (err) throw err;
+                        fs.unlink(tmpPath, function (err) {
+                            if (err) throw err;
 
-                        product = new productModel()
-                        product.name = req.body.name
-                        product.price = req.body.price
-                        product.content = req.body.content
-                        product.image = path.join(imgDir, imgFileName).replaceAll('\\', '/')
-                        product.cartId = req.body.cartId
-                        product.quantity = req.body.quantity
-                        product._id = productId
+                            product.image = path.join(imgDir, imgFileName).replaceAll('\\', '/')
 
-                        productModel.findByIdAndUpdate(productId, product)
-                            .then(() => {
-                                msg = 'Cập nhật thành công'
-                                res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
-                            }).catch((err) => {
-                                console.log(err)
-                                msg = "Lỗi"
-                                res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
-                            })
+                            productModel.findByIdAndUpdate(productId, product)
+                                .then(() => {
+                                    msg = 'Cập nhật thành công'
+                                    res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
+                                }).catch((err) => {
+                                    console.log(err)
+                                    msg = "Lỗi"
+                                    res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
+                                })
+                        });
                     });
                 });
-            });
-        })
+            })
+        } else {
+            msg = 'Cập nhật thành công'
+            productModel.findByIdAndUpdate(productId, product)
+                .then((pr) => {
+                    msg = 'Cập nhật thành công'
+                    res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product: pr })
+                }).catch((err) => {
+                    console.log(err)
+                    msg = "Lỗi"
+                    res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product: pr })
+                })
+        }
     } else {
         product = await productModel.findById(productId)
         res.render('product/editProduct', { title: 'Chỉnh sửa sản phẩm', msg, categories, product })
     }
-
 }
 
 exports.detailProduct = async (req, res, next) => {
