@@ -6,7 +6,9 @@ var uploader = multer({ dest: '/uploads/' })
 
 var checkLogin = require('../middlewares/checkLogin')
 
-router.get('/', checkLogin.request, userController.users)
+router.use(checkLogin.request)
+
+router.get('/', userController.users)
 
 router.post('/add', uploader.single('image'), userController.addUser)
 router.post('/edit', uploader.single('image'), userController.editUser)

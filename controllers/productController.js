@@ -60,7 +60,7 @@ exports.addProduct = async (req, res, next) => {
     if (req.method == 'POST') {
         let tmpPath = req.file.path
         let date = new Date()
-        let imgDir = path.join('/uploads', 'products', (date.getMonth() + 1).toString(date.getFullYear().toString(),))
+        let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
         let targetDir = path.join(__dirname, '..', 'public', imgDir)
         fs.mkdir(targetDir, { recursive: true }, (err) => {
             let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
@@ -124,7 +124,7 @@ exports.editProduct = async (req, res, next) => {
             let imgDir = path.join('/uploads', 'products', date.getFullYear().toString(), (date.getMonth() + 1).toString())
             let targetDir = path.join(__dirname, '..', 'public', imgDir)
             fs.mkdir(targetDir, { recursive: true }, (err) => {
-                let imgFileName = `${date.getTime().toString()}-${req.file.originalname}`
+                let imgFileName = `${date.getTime()}-${req.file.originalname}`
                 let targetPath = path.join(targetDir, imgFileName)
 
                 fs.readFile(tmpPath, function (err, data) {
