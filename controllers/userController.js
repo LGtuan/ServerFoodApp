@@ -88,7 +88,7 @@ exports.editUser = async (req, res, next) => {
 
                             userModel.findByIdAndUpdate(userObj._id, userObj)
                                 .then(() => {
-                                    msg = "Đã cập nhật người dùng có ID : " + userObj._id
+                                    msg = "Đã cập nhật người dùng có tên : " + userObj.name
                                     res.render('user/userNotification', { title: 'Cập nhât người dùng', msg })
                                 }).catch((err) => {
                                     console.log(err)
@@ -102,7 +102,7 @@ exports.editUser = async (req, res, next) => {
         } else {
             userModel.findByIdAndUpdate(userObj._id, userObj)
                 .then((user) => {
-                    msg = "Đã cập nhật người dùng có ID : " + userObj._id
+                    msg = "Đã cập nhật người dùng có ID : " + userObj.name
                     res.render('user/userNotification', { title: 'Cập nhât người dùng', msg })
                 }).catch((err) => {
                     console.log(err)
@@ -125,7 +125,7 @@ exports.deleteUser = async (req, res, next) => {
 
             await userModel.findByIdAndDelete(id)
 
-            msg = "Đã xóa người dùng có ID : " + id
+            msg = "Xóa thành công người dùng : "
         } catch (err) {
             msg = "Cập nhật người dùng thất bại"
             console.log(err)

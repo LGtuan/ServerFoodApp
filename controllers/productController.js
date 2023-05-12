@@ -10,6 +10,7 @@ exports.products = async (req, res, next) => {
     let priceOperator = ''
     let quantity = ''
     let price = ''
+    let cartId = ''
     if (typeof (req.query.quantityOperator) != 'undefined') {
         quantityOperator = req.query.quantityOperator
         priceOperator = req.query.priceOperator
@@ -34,6 +35,13 @@ exports.products = async (req, res, next) => {
             }
         }
     }
+    if (req.query.categoryFilter) {
+        cartId = req.query.categoryFilter
+
+        if (cartId) {
+            filterCondition = { ...filterCondition, cartId: cartId }
+        }
+    }
 
     // let list = await myModel.productModel.find(filterCondition).sort({ name: 1 });
 
@@ -47,7 +55,8 @@ exports.products = async (req, res, next) => {
         quantityOperator,
         priceOperator,
         quantity,
-        price
+        price,
+        cartId
     })
 }
 
@@ -108,6 +117,8 @@ exports.editProduct = async (req, res, next) => {
     let productId = req.params.productId
     let product;
     let categories = await categoryModel.find()
+
+    console.log(req.body)
 
     if (req.method == 'POST') {
         product = new productModel()
@@ -194,7 +205,7 @@ exports.deleteProduct = async (req, res, next) => {
             let id = req.body.id
             await productModel.findByIdAndDelete(id)
 
-            msg = 'Xóa thành công sản phẩm có id : ' + id
+            msg = 'Xóa thành công sản phẩm'
         } catch (err) {
             msg = 'Xóa thất bại'
             console.log(err)

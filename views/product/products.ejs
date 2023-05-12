@@ -56,19 +56,19 @@
       </div>
       <hr />
       <div class="row d-flex align-items-center" style="justify-content: space-between;">
-        <div class="row d-flex align-items-center pb-3" style="width: auto;">
-          <label style="width: auto;" class="fw-bold">Thể loại :</label>
-          <select id="category-filter" class="form-select" style="width: 200px;">
-            <option value="">Tất cả thể loại</option>
-            <% categories.forEach(item=> { %>
-
-              <option value="<%= item.name %>">
-                <%= item.name %>
-              </option>
-              <%}) %>
-          </select>
-        </div>
         <form class="row d-flex align-items-center pb-3" style="width: auto;">
+          <div class="row d-flex align-items-center" style="width: auto;">
+            <label style="width: auto;" class="fw-bold">Thể loại :</label>
+            <select name="categoryFilter" class="form-select" style="width: 200px;">
+              <option value="">Tất cả thể loại</option>
+              <% categories.forEach(item=> { %>
+
+                <option <%=item._id==cartId ? 'selected' : '' %> value="<%= item._id %>">
+                    <%= item.name %>
+                </option>
+                <%}) %>
+            </select>
+          </div>
           <label style="width: auto;" class="fw-bold">Số lượng :</label>
           <select name="quantityOperator" class="form-select" style="width:90px;">
             <option value="">Chọn</option>
@@ -102,12 +102,12 @@
           <% productData.map((product)=>{ %>
             <tr>
               <td style="width: 200px;">
-                <a href="/products/<%= product._id %>" class="text-black">
-                  <%= product._id %>
-                </a>
+                <%= product._id %>
               </td>
               <td style="max-width: 150px;">
-                <%= product.name %>
+                <a href="/products/<%= product._id %>" class="text-black">
+                  <%= product.name %>
+                </a>
               </td>
               <td>
                 <%= product.cartId.name %>
@@ -181,10 +181,10 @@
       columnDefs: [{ orderable: false, targets: [2, 3, 6] }],
     });
 
-    $('#category-filter').on('change', function () {
-      var category = $(this).val();
-      table.column(2).search(category).draw();
-    });
+    // $('#category-filter').on('change', function () {
+    //   var category = $(this).val();
+    //   table.column(2).search(category).draw();
+    // });
   });
 
 

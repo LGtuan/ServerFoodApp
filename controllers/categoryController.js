@@ -60,7 +60,7 @@ exports.edit = async (req, res, next) => {
 
         try {
             await categoryModel.findByIdAndUpdate(id, categoryObj)
-            msg = 'Đã cập nhật danh mục có id : ' + id
+            msg = 'Đã cập nhật danh mục có id : ' + categoryObj.name
         } catch (err) {
             msg = "Cập nhật danh mục thất bại vui lòng thử lại"
             console.log(err)

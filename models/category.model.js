@@ -3,7 +3,8 @@ var db = require('./db')
 
 const categorySchema = new db.mongoose.Schema(
     {
-        name: { type: String, required: true }
+        name: { type: String, required: true },
+        image: { type: String, required: false }
     },
     {
         collection: 'Categories',

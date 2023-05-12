@@ -55,8 +55,8 @@
                         <label class="form-label fw-bold">Thể loại</label>
                         <select class="form-select" name="cartId">
                             <% categories.forEach( category=> {%>
-                                <option <%=(String(category._id)==String(product.cartId)) ? 'selected' : '' %> value="
-                                    <%= category._id %>">
+                                <option <%=(String(category._id)==String(product.cartId)) ? 'selected' : '' %>
+                                    value="<%= category._id %>">
                                         <%= category.name %>
                                 </option>
                                 <%}) %>
