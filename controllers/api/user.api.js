@@ -11,8 +11,6 @@ exports.register = async (req, res, next) => {
 
         const user = new userModel(req.body);
 
-        console.log(user)
-
         // Sử dụng bcrypt để mã hóa mật khẩu của người dùng và lưu trữ
         user.password = await bcrypt.hash(req.body.password, salt);
         let newUser = await user.generateAuthToken()
@@ -36,7 +34,8 @@ exports.login = async (req, res, next) => {
         }
 
         let newUser = await user.generateAuthToken()
-        newUser.password = ''
+        delete newUser.password
+        console.log(newUser)
 
         return res.status(200).json({ user: newUser })
     } catch (error) {

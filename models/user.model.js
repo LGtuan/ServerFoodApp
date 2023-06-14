@@ -4,11 +4,13 @@ var userSchema = new db.mongoose.Schema(
     {
         name: { type: String, required: false },
         email: { type: String, required: true },
-        image: { type: String },
+        image: { type: String, required: false },
         status: { type: String, required: false },
         type: { type: String, required: false },
         password: { type: String, required: true },
-        token: { type: String, required: false }
+        token: { type: String, required: false },
+        favoriteProductIds: { type: Array, required: false },
+        numsNotification: { type: Object, required: false }
     },
     {
         collection: 'Users',
@@ -28,6 +30,11 @@ userSchema.methods.generateAuthToken = async function () {
     const token = jwt.sign({ _id: user._id, email: user.email }, chuoi_ky_tu_bi_mat)
     // user.tokens = user.tokens.concat({token}) // code này dành cho nhiều token, ở demo này dùng 1 token
     user.token = token;
+    user.numsNotification = {
+        profile: 0,
+        favoriteProduct: 0,
+        favoriteOrder: 0
+    }
     return await user.save()
 }
 
